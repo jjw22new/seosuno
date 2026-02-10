@@ -13,6 +13,8 @@ https.get(RSS_URL, (res) => {
       .map((m) => m[1])
       .filter((url) => url.includes("blog.naver.com"));
 
+    const today = new Date().toISOString().split("T")[0];
+
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${links
@@ -20,12 +22,13 @@ ${links
     (url) => `
   <url>
     <loc>${url}</loc>
+    <lastmod>${today}</lastmod>
   </url>`
   )
   .join("")}
 </urlset>`;
 
     fs.writeFileSync("sitemap.xml", sitemap);
-    console.log("✅ sitemap.xml 생성 완료");
+    console.log("✅ sitemap.xml updated");
   });
 });
