@@ -1,0 +1,44 @@
+name: Call PHP APIs
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # 매일 00:00 UTC (한국 09:00)
+  workflow_dispatch:
+
+jobs:
+  call-apis:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call multiple URLs and check status
+        run: |
+          URLS=(
+            "http://sapjilbang.com/coinfo/app/scrap_news.php"
+            "http://sapjilbang.com/coinfo/app/scrap_blog.php"
+          )
+
+          FAIL=0
+
+          for URL in "${URLS[@]}"; do
+            echo "Calling $URL"
+
+            STATUS=$(curl -o /dev/null -s -w "%{http_code}" -L "$URL")
+
+            echo "Status: $STATUS"
+
+            if [ "$STATUS" -ne 200 ]; then
+              echo "❌ Failed: $URL"
+              FAIL=1
+            else
+              echo "✅ Success: $URL"
+            fi
+
+            echo "-----------------------------"
+          done
+
+          if [ "$FAIL" -ne 0 ]; then
+            echo "🚨 One or more requests failed"
+            exit 1
+          fi
+
+          echo "🎉 All API calls succeeded"
