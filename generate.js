@@ -22,6 +22,8 @@ https.get(RSS_URL, (res) => {
       const urls = items.map((item) => {
         // ⭐ 핵심: 공백 제거 + 문자열 변환
         const link = String(item.link[0]).trim();
+        link = link.replace("?fromRss=true&trackingCode=rss", "");
+        link = link.replace("https://blog.naver.com", "https://m.blog.naver.com");
 
         // XML 안전 처리 (& 같은 문자)
         const safeLink = link
