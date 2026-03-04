@@ -15,6 +15,7 @@ jobs:
           URLS=(
             "http://sapjilbang.com/coinfo/app/scrap_news.php"
             "http://sapjilbang.com/coinfo/app/scrap_blog.php"
+            "http://sapjilbang.com/infoblic/app/scrap_blog.php"
           )
 
           FAIL=0
